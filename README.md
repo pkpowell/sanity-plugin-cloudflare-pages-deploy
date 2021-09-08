@@ -13,7 +13,7 @@
 Run the following command in your studio folder using the Sanity CLI:
 
 ```sh
-sanity install cloudflare-deploy
+sanity install cloudflare-pages-deploy
 ```
 
 ⚠️ **Note:** If your Studio is not using the `@sanity/dashboard` part, you'll need to manually install this as well:
