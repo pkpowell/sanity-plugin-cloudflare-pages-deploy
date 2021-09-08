@@ -36,7 +36,7 @@ Next, you'll be prompted to add the following:
 > **`Cloudflare Project Name`**<br />
 > This is the actual Project Name listed in your Cloudflare account. Navigate to your Project Settings within Cloudflare Pages to find your Project Name.
 
->> **`Cloudflare API URL (Proxy)`**<br />
+> **`Cloudflare API URL (Proxy)`**<br />
 > This is the API Endpoint URL where the requests should be sent to by the plugin. For more information why this is necessary look at the CORS section of this README [here](#cloudflare-cors). This can also be specified with port and must not end with a trailing slash at the end.
 
 > **`Cloudflare Email`**<br />
