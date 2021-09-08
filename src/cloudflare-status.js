@@ -1,6 +1,6 @@
 import React from 'react'
 
-import styles from './deploy-status.css'
+import styles from './cloudflare-status.css'
 
 const StatusIndicator = ({ status, children }) => {
   return (
@@ -11,11 +11,11 @@ const StatusIndicator = ({ status, children }) => {
   )
 }
 
-const titleCase = str => {
+const titleCase = (str) => {
   return str
-    .toLowerCase()
+    ?.toLowerCase()
     .split(' ')
-    .map(word => {
+    .map((word) => {
       return word.charAt(0).toUpperCase() + word.slice(1)
     })
     .join(' ')

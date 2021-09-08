@@ -1,55 +1,49 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import useSWR from 'swr'
 import spacetime from 'spacetime'
 
 import { Avatar, Box, Card, Flex, Spinner, Text, Tooltip } from '@sanity/ui'
 
 import styles from './deploy-history.css'
-import StatusIndicator from './deploy-status'
+import StatusIndicator from './cloudflare-status'
 
 const DeployHistory = ({
-  url,
-  vercelProject,
-  vercelToken,
-  vercelTeam,
-  hookContext
+  cloudflareApiEndpointUrl,
+  cloudflareProject,
+  cloudflareEmail,
+  cloudflareAPIKey,
 }) => {
   const [state, setState] = useState({})
 
   useEffect(() => {
-    if (!vercelProject) {
+    if (!cloudflareProject) {
       return
     }
     setState({ loading: true })
 
     axios
-      .get(
-        `https://api.vercel.com/v5/now/deployments?projectId=${vercelProject}&meta-deployHookId=${url
-          .split('/')
-          .pop()}&limit=6${vercelTeam?.id ? `&teamId=${vercelTeam?.id}` : ''}`,
-        {
-          headers: {
-            'content-type': 'application/json',
-            Authorization: `Bearer ${vercelToken}`
-          }
-        }
-      )
+      .get(cloudflareApiEndpointUrl, {
+        headers: {
+          'X-Auth-Email': cloudflareEmail,
+          'X-Auth-Key': cloudflareAPIKey,
+          'Content-Type': 'application/json',
+        },
+      })
       .then(({ data }) => {
         setState({
-          deployments: data.deployments,
+          deployments: data.result,
           loading: false,
-          error: false
+          error: false,
         })
       })
-      .catch(e => {
+      .catch((e) => {
         setState({
           error: true,
-          loading: false
+          loading: false,
         })
         console.warn(e)
       })
-  }, [vercelProject])
+  }, [cloudflareProject])
 
   if (state.loading) {
     return (
@@ -63,7 +57,7 @@ const DeployHistory = ({
     return (
       <Card padding={[3, 3, 4]} radius={2} shadow={1} tone="critical">
         <Text size={[2, 2, 3]}>
-          Could not load deployments for {vercelProject}
+          Could not load deployments for {cloudflareProject}
         </Text>
       </Card>
     )
@@ -77,48 +71,27 @@ const DeployHistory = ({
           <th>State</th>
           <th>Commit</th>
           <th>Time</th>
-          <th>Creator</th>
         </tr>
       </Box>
       <Box as="tbody" style={{ display: 'table-row-group' }}>
-        {state.deployments?.map(deployment => (
-          <tr as="tr" key={deployment.uid}>
+        {state.deployments?.map((deployment) => (
+          <tr as="tr" key={deployment.id}>
             <td>
-              <a href={`https://${deployment.url}`} target="_blank">
+              <a href={deployment.url} target="_blank">
                 {deployment.url}
               </a>
             </td>
             <td>
-              <StatusIndicator status={deployment.state} />
+              <StatusIndicator status={deployment.latest_stage?.status} />
             </td>
             <td>
-              <div>{deployment.meta?.githubCommitRef}</div>
+              <div>{deployment.deployment_trigger?.metadata?.commit_hash}</div>
               <small className={styles.commit}>
-                {deployment.meta?.githubCommitMessage}
+                {deployment.deployment_trigger?.metadata?.commit_message}
               </small>
             </td>
             <td>
-              {spacetime.now().since(spacetime(deployment.created)).rounded}
-            </td>
-            <td>
-              <Tooltip
-                content={
-                  <Box padding={2}>
-                    <Text muted size={1}>
-                      {deployment.creator?.username}
-                    </Text>
-                  </Box>
-                }
-                fallbackPlacements={['right', 'left']}
-                placement="top"
-              >
-                <Avatar
-                  alt={deployment.creator?.username}
-                  src={`https://vercel.com/api/www/avatar/${deployment.creator?.uid}?&s=48`}
-                  size={1}
-                  style={{ margin: 'auto' }}
-                />
-              </Tooltip>
+              {spacetime.now().since(spacetime(deployment.created_on)).rounded}
             </td>
           </tr>
         ))}

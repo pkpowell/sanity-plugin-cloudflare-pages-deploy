@@ -1,20 +1,20 @@
 {
-  "name": "sanity-plugin-vercel-deploy",
-  "version": "2.0.1",
-  "description": "Trigger Vercel Deploy Hooks from your Sanity Studio.",
+  "name": "sanity-plugin-cloudflare-pages-deploy",
+  "version": "1.0.0",
+  "description": "Trigger Cloudflare Pages Deploys from your Sanity Studio.",
   "keywords": [
     "sanity",
     "plugin",
-    "vercel",
+    "cloudflare",
     "deploy",
     "webhook"
   ],
-  "author": "Nick DiMatteo <hello@nickdimatteo.com>",
+  "author": "Leonhard Esterbauer <leonhard.esterbauer@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ndimatteo/sanity-plugin-vercel-deploy/issues"
+    "url": "https://github.com/estallio/sanity-plugin-cloudflare-pages-deploy/issues"
   },
-  "homepage": "https://github.com/ndimatteo/sanity-plugin-vercel-deploy#readme",
+  "homepage": "https://github.com/estallio/sanity-plugin-cloudflare-pages-deploy#readme",
   "main": "dist/index.js",
   "scripts": {
     "build": "babel src -d dist --copy-files",
@@ -34,7 +34,8 @@
     "@babel/plugin-proposal-class-properties": "^7.12.1",
     "@babel/plugin-transform-runtime": "^7.12.10",
     "@babel/preset-env": "^7.12.11",
-    "@babel/preset-react": "^7.12.10"
+    "@babel/preset-react": "^7.12.10",
+    "prettier": "2.3.2"
   },
   "peerDependencies": {
     "@sanity/base": "^2.1.1",
@@ -46,7 +47,7 @@
     "react-dom": "^16.14.0"
   },
   "sanityTemplate": {
-    "suggestedName": "vercel-deploy",
+    "suggestedName": "cloudflare-pages-deploy",
     "requiresConfig": false,
     "minimumBaseVersion": "2.1.0"
   }

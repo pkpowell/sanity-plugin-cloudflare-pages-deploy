@@ -2,16 +2,15 @@
 @import 'part:@sanity/base/theme/variables/code-style';
 
 .appContainer {
-	padding: 2rem;
+  padding: 2rem;
 }
-
 
 .container {
   composes: container from 'part:@sanity/dashboard/widget-styles';
 }
 
 .header {
-	composes: header from 'part:@sanity/dashboard/widget-styles';
+  composes: header from 'part:@sanity/dashboard/widget-styles';
 }
 
 .title {
@@ -21,17 +20,17 @@
 .titleIcon {
   top: 0.125em;
   position: relative;
-  margin: -.25em .25em -.25em -.25em;
+  margin: -0.25em 0.25em -0.25em -0.25em;
   width: 1.5em;
   height: 1.5em;
 }
 
 .list {
-	composes: content from 'part:@sanity/dashboard/widget-styles';
-	padding: 0;
-	border-top: 1px solid var(--hairline-color);
-	min-height: 0 !important;
-	height: auto !important;
+  composes: content from 'part:@sanity/dashboard/widget-styles';
+  padding: 0;
+  border-top: 1px solid var(--hairline-color);
+  min-height: 0 !important;
+  height: auto !important;
 }
 
 .loader {
@@ -39,7 +38,7 @@
 }
 
 .emptyList {
-	margin: 1rem 4rem 4rem;
+  margin: 1rem 4rem 4rem;
   text-align: center;
 }
 
@@ -56,8 +55,8 @@
 
 .footer {
   composes: footer from 'part:@sanity/dashboard/widget-styles';
-	border-top: 1px solid var(--hairline-color);
-	cursor: pointer;
+  border-top: 1px solid var(--hairline-color);
+  cursor: pointer;
 }
 
 .fieldWrapper {

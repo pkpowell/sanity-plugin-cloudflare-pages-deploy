@@ -16,31 +16,32 @@ import {
   Inline,
   Text,
   Tooltip,
-  Dialog
+  Dialog,
 } from '@sanity/ui'
 import { EllipsisVerticalIcon, ClockIcon, TrashIcon } from '@sanity/icons'
 
 import styles from './deploy-item.css'
-import StatusIndicator from './deploy-status'
+import StatusIndicator from './cloudflare-status'
 import DeployHistory from './deploy-history'
 
-const fetcher = (url, token) =>
+const fetcher = (url, email, apiKey) =>
   axios
     .get(url, {
       headers: {
-        'content-type': 'application/json',
-        Authorization: `Bearer ${token}`
-      }
+        'X-Auth-Email': email,
+        'X-Auth-Key': apiKey,
+        'Content-Type': 'application/json',
+      },
     })
-    .then(res => res.data)
+    .then((res) => res.data)
 
 const deployItem = ({
   name,
-  url,
   id,
-  vercelProject,
-  vercelToken,
-  vercelTeam
+  cloudflareApiEndpointUrl,
+  cloudflareProject,
+  cloudflareEmail,
+  cloudflareAPIKey,
 }) => {
   const client = sanityClient.withConfig({ apiVersion: '2021-03-25' })
 
@@ -48,103 +49,92 @@ const deployItem = ({
   const [isDeploying, setDeploying] = useState(false)
   const [isHistoryOpen, setIsHistoryOpen] = useState(false)
   const [errorMessage, setErrorMessage] = useState(null)
-  const [status, setStatus] = useState('LOADING')
+  const [status, setStatus] = useState('loading')
   const [timestamp, setTimestamp] = useState(null)
   const [buildTime, setBuildTime] = useState(null)
 
   const toast = useToast()
 
-  const { data: projectData } = useSWR(
-    [
-      `https://api.vercel.com/v1/projects/${vercelProject}${
-        vercelTeam?.id ? `?teamId=${vercelTeam?.id}` : ''
-      }`,
-      vercelToken
-    ],
-    (url, token) => fetcher(url, token),
-    {
-      errorRetryCount: 3,
-      onError: err => {
-        const errorMessage = err.response?.data?.error?.message
-        setStatus('ERROR')
-        setErrorMessage(errorMessage)
-        setIsLoading(false)
-      }
-    }
-  )
-
   const { data: deploymentData } = useSWR(
-    () => [
-      `https://api.vercel.com/v5/now/deployments?projectId=${
-        projectData.id
-      }&meta-deployHookId=${url.split('/').pop()}&limit=1${
-        vercelTeam?.id ? `&teamId=${vercelTeam?.id}` : ''
-      }`,
-      vercelToken
-    ],
-    (url, token) => fetcher(url, token),
+    [cloudflareApiEndpointUrl, cloudflareEmail, cloudflareAPIKey],
+    (url, email, apiKey) => fetcher(url, email, apiKey),
     {
       errorRetryCount: 3,
       refreshInterval: isDeploying ? 5000 : 0,
-      onError: err => {
-        const errorMessage = err.response?.data?.error?.message
-        setStatus('ERROR')
+      onError: (err) => {
+        // to not make things too complicated - display just the first error
+        const errorMessage = err.response?.data?.errors[0]?.message
+        setStatus('unavailable')
         setErrorMessage(errorMessage)
         setIsLoading(false)
-      }
+      },
     }
   )
 
-  const onDeploy = (name, url) => {
-    setStatus('INITIATED')
+  const onDeploy = () => {
+    setStatus('initiated')
     setDeploying(true)
     setTimestamp(null)
     setBuildTime(null)
 
     axios
-      .post(url)
-      .then(res => {
+      .post(
+        cloudflareApiEndpointUrl,
+        {},
+        {
+          headers: {
+            'X-Auth-Email': cloudflareEmail,
+            'X-Auth-Key': cloudflareAPIKey,
+            'Content-Type': 'application/json',
+          },
+        }
+      )
+      .then((res) => {
         toast.push({
           status: 'success',
           title: 'Success!',
-          description: `Triggered Deployment: ${name}`
+          description: `Triggered Deployment: ${name}`,
         })
       })
-      .catch(err => {
+      .catch((err) => {
         setDeploying(false)
         toast.push({
           status: 'error',
           title: 'Deploy Failed.',
-          description: `${err}`
+          description: `${err}`,
         })
       })
   }
 
-  const onCancel = (id, token) => {
+  const onCancel = (deploymentId) => {
     setIsLoading(true)
+
     axios
-      .patch(`https://api.vercel.com/v12/now/deployments/${id}/cancel`, null, {
+      .post(`${cloudflareApiEndpointUrl}/${deploymentId}/cancel`, null, {
         headers: {
-          'content-type': 'application/json',
-          Authorization: `Bearer ${token}`
-        }
+          'X-Auth-Email': cloudflareEmail,
+          'X-Auth-Key': cloudflareAPIKey,
+          'Content-Type': 'application/json',
+        },
       })
-      .then(res => res.data)
-      .then(res => {
-        setStatus('CANCELED')
+      .then((res) => res.data?.result)
+      .then((res) => {
+        setStatus('canceled')
         setDeploying(false)
         setIsLoading(false)
         setBuildTime(null)
-        setTimestamp(res.canceledAt)
+        setTimestamp(res?.latest_stage?.ended_on)
       })
   }
 
-  const onRemove = (name, id) => {
+  // removes the whole deployments-entry in sanity
+  const onRemove = () => {
     setIsLoading(true)
-    client.delete(id).then(res => {
+
+    client.delete(id).then((res) => {
       toast.push({
         status: 'success',
-        title: `Successfully deleted deployment: ${name}`
+        title: `Successfully deleted deployment: ${name}`,
       })
     })
   }
@@ -153,13 +143,13 @@ const deployItem = ({
   useEffect(() => {
     let isSubscribed = true
 
-    if (deploymentData?.deployments && isSubscribed) {
-      const latestDeployment = deploymentData.deployments[0]
+    if (deploymentData?.result && isSubscribed) {
+      const latestDeployment = deploymentData.result[0]
 
-      setStatus(latestDeployment?.state || 'READY')
+      setStatus(latestDeployment?.latest_stage?.status || 'idle')
 
-      if (latestDeployment?.created) {
-        setTimestamp(latestDeployment?.created)
+      if (latestDeployment?.created_on) {
+        setTimestamp(latestDeployment?.created_on)
       }
 
       setIsLoading(false)
@@ -173,9 +163,14 @@ const deployItem = ({
     let isSubscribed = true
 
     if (isSubscribed) {
-      if (status === 'READY' || status === 'ERROR' || status === 'CANCELED') {
+      if (
+        status === 'success' ||
+        status === 'idle' ||
+        status === 'failure' ||
+        status === 'canceled'
+      ) {
         setDeploying(false)
-      } else if (status === 'BUILDING' || status === 'INITIATED') {
+      } else if (status === 'active') {
         setDeploying(true)
       }
     }
@@ -184,7 +179,7 @@ const deployItem = ({
   }, [status])
 
   // count build time
-  const tick = timestamp => {
+  const tick = (timestamp) => {
     if (timestamp) {
       setBuildTime(spacetime.now().since(spacetime(timestamp)).rounded)
     }
@@ -214,19 +209,12 @@ const deployItem = ({
         <div className={styles.hookDetails}>
           <h4 className={styles.hookTitle}>
             <span>{name}</span>
-            <Badge>{vercelProject}</Badge>
-
-            {vercelTeam?.id && (
-              <>
-                {' '}
-                <Badge tone="primary">{vercelTeam?.name}</Badge>
-              </>
-            )}
+            <Badge>{cloudflareProject}</Badge>
           </h4>
-          <p className={styles.hookURL}>{url}</p>
+          <p className={styles.hookURL}>{cloudflareApiEndpointUrl}</p>
         </div>
         <div className={styles.hookActions}>
-          {vercelToken && vercelProject && (
+          {cloudflareEmail && cloudflareAPIKey && cloudflareProject && (
             <div className={styles.hookStatus}>
               <StatusIndicator status={status}>
                 {errorMessage && (
@@ -237,7 +225,7 @@ const deployItem = ({
                           <span
                             style={{
                               display: 'inline-block',
-                              textAlign: 'center'
+                              textAlign: 'center',
                             }}
                           >
                             {errorMessage}
@@ -269,18 +257,16 @@ const deployItem = ({
             <Button
               type="button"
               tone="positive"
-              disabled={isDeploying || isLoading}
+              disabled={isDeploying || isLoading || status === 'unavailable'}
               loading={isDeploying || isLoading}
-              onClick={() => onDeploy(name, url)}
+              onClick={() => onDeploy()}
               text="Deploy"
             />
-            {isDeploying && (status === 'BUILDING' || status === 'QUEUED') && (
+            {isDeploying && status === 'active' && (
               <Button
                 type="button"
                 tone="critical"
-                onClick={() =>
-                  onCancel(deploymentData.deployments[0].uid, vercelToken)
-                }
+                onClick={() => onCancel(deploymentData.result[0].id)}
                 text="Cancel"
               />
             )}
@@ -299,13 +285,13 @@ const deployItem = ({
                     text="History"
                     icon={ClockIcon}
                     onClick={() => setIsHistoryOpen(true)}
-                    disabled={!deploymentData?.deployments.length}
+                    disabled={!deploymentData?.result?.length}
                   />
                   <MenuItem
                     text="Delete"
                     icon={TrashIcon}
                     tone="critical"
-                    onClick={() => onRemove(name, id)}
+                    onClick={() => onRemove()}
                   />
                 </Menu>
               }
@@ -317,18 +303,17 @@ const deployItem = ({
 
       {isHistoryOpen && (
         <Dialog
-          header={`Deployment History: ${name} (${deploymentData?.deployments[0]?.meta.deployHookName})`}
+          header={`Deployment History: ${name} (${cloudflareProject})`}
           onClickOutside={() => setIsHistoryOpen(false)}
           onClose={() => setIsHistoryOpen(false)}
           width={2}
         >
           <Box padding={4}>
             <DeployHistory
-              url={url}
-              vercelProject={projectData.id}
-              vercelToken={vercelToken}
-              vercelTeam={vercelTeam}
-              hookContext={deploymentData?.deployments[0]?.meta.deployHookName}
+              cloudflareApiEndpointUrl={cloudflareApiEndpointUrl}
+              cloudflareProject={cloudflareProject}
+              cloudflareEmail={cloudflareEmail}
+              cloudflareAPIKey={cloudflareAPIKey}
             />
           </Box>
         </Dialog>
