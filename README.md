@@ -6,7 +6,7 @@
 ✨ LIVE status updates ✨ multiple deployments ✨ active polling ✨
 </p>
 
-![Screenshot](img/screenshot.jpg)
+![Screenshot](https://github.com/estallio/sanity-plugin-cloudflare-pages-deploy/blob/main/img/screenshot.jpg)
 
 ## Install
 
@@ -62,3 +62,6 @@ As it is not possible to access Cloudflare Pages Deployments at the moment via A
 > [nickdimatteo.com](https://nickdimatteo.com) &nbsp;&middot;&nbsp;
 > Github [@ndimatteo](https://github.com/ndimatteo) &nbsp;&middot;&nbsp;
 > Instagram [@ndimatteo](https://instagram.com/ndimatteo)
+---
+###### TODO:
+- [ ] Automate npm publishing on git tags (automatic updates on package.json version)
