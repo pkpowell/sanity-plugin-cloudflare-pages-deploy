@@ -65,3 +65,11 @@ As it is not possible to access Cloudflare Pages Deployments at the moment via A
 ---
 ###### TODO:
 - [ ] Automate npm publishing on git tags (automatic updates on package.json version)
+
+## License
+
+[MIT](https://github.com/estallio/sanity-plugin-cloudflare-pages-deploy/blob/main/LICENSE)
+
+## Contact
+:octocat: [@estallio](https://github.com/estallio)\
+:email: [leonhard.esterbauer@gmal.com](mailto:leonhard.esterbauer@gmail.com)
