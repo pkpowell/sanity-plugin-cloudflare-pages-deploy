@@ -51,17 +51,6 @@ Next, you'll be prompted to add the following:
 
 As it is not possible to access Cloudflare Pages Deployments at the moment via API Tokens, we have to utilize the Cloudflare Global API Key which is only accessible via Email and API Key in the HTTP-Header like described [here](https://developers.cloudflare.com/pages/platform/api). Another problem is the missing CORS functionality when accessing the Cloudflare API. For this reason I created a minimal Cloudflare Worker script that passthroughs only the needed API-requests and sets the according CORS headers. Deploying a Worker Script is really straightforward and can also be done in the browser. A simple template from me that should do the job can be found [here](https://github.com/estallio/cloudflare-pages-deployments-api-proxy).
 
-## License
-
-### MIT
-
-> Github [@estallio](https://github.com/estallio) &nbsp;
-
-##### Originally written for Vercel by:
-
-> [nickdimatteo.com](https://nickdimatteo.com) &nbsp;&middot;&nbsp;
-> Github [@ndimatteo](https://github.com/ndimatteo) &nbsp;&middot;&nbsp;
-> Instagram [@ndimatteo](https://instagram.com/ndimatteo)
 ---
 ###### TODO:
 - [ ] Automate npm publishing on git tags (automatic updates on package.json version)
@@ -70,6 +59,13 @@ As it is not possible to access Cloudflare Pages Deployments at the moment via A
 
 [MIT](https://github.com/estallio/sanity-plugin-cloudflare-pages-deploy/blob/main/LICENSE)
 
+##### Originally written for Vercel by:
+
+> [nickdimatteo.com](https://nickdimatteo.com) &nbsp;&middot;&nbsp;
+> Github [@ndimatteo](https://github.com/ndimatteo) &nbsp;&middot;&nbsp;
+> Instagram [@ndimatteo](https://instagram.com/ndimatteo)
+
 ## Contact
 :octocat: [@estallio](https://github.com/estallio)\
 :email: [leonhard.esterbauer@gmal.com](mailto:leonhard.esterbauer@gmail.com)
+
