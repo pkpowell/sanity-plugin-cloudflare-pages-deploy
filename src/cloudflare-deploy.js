@@ -56,7 +56,7 @@ const CloudflareDeploy = () => {
     // first fetch Cloudflare account id to the according email and api key
     try {
       const fetchAccountId = await axios.get(
-        `${pendingDeploy.apiUrl}/client/v4/accounts?page=1&per_page=1&direction=desc`,
+        `${pendingDeploy.apiUrl}/api/v4/accounts?page=1&per_page=1&direction=desc`,
         {
           headers: {
             'X-Auth-Email': pendingDeploy.email,
@@ -93,7 +93,7 @@ const CloudflareDeploy = () => {
         _id: `cloudflare-pages-deploy.${nanoid()}`,
         _type: WEBHOOK_TYPE,
         name: pendingDeploy.title,
-        cloudflareApiEndpointUrl: `${pendingDeploy.apiUrl}/client/v4/accounts/${accountId}/pages/projects/${pendingDeploy.project}/deployments`,
+        cloudflareApiEndpointUrl: `${pendingDeploy.apiUrl}/api/v4/accounts/${accountId}/pages/projects/${pendingDeploy.project}/deployments`,
         cloudflareAccountId: accountId,
         cloudflareProject: pendingDeploy.project,
         cloudflareEmail: pendingDeploy.email,
