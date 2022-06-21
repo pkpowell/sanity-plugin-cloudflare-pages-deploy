@@ -137,6 +137,7 @@ var CloudflareDeploy = function CloudflareDeploy() {
                 cloudflareApiEndpointUrl: "".concat(pendingDeploy.apiUrl, "/client/v4/accounts/").concat(accountId, "/pages/projects/").concat(pendingDeploy.project, "/deployments"),
                 cloudflareAccountId: accountId,
                 cloudflareProject: pendingDeploy.project,
+                cloudflareProjectID: pendingDeploy.projectID,
                 cloudflareEmail: pendingDeploy.email,
                 cloudflareApiKey: pendingDeploy.apiKey
               }).then(function () {
@@ -246,6 +247,7 @@ var CloudflareDeploy = function CloudflareDeploy() {
       cloudflareApiEndpointUrl: deploy.cloudflareApiEndpointUrl,
       cloudflareAccountId: deploy.cloudflareAccountId,
       cloudflareProject: deploy.cloudflareProject,
+      cloudflareProjectID: deploy.cloudflareProjectID,
       cloudflareEmail: deploy.cloudflareEmail,
       cloudflareAPIKey: deploy.cloudflareApiKey
     });
@@ -288,7 +290,7 @@ var CloudflareDeploy = function CloudflareDeploy() {
       onClick: function onClick() {
         return onSubmit();
       },
-      disabled: isSubmitting || !pendingDeploy.title || !pendingDeploy.project || !pendingDeploy.apiUrl || !pendingDeploy.email || !pendingDeploy.apiKey
+      disabled: isSubmitting || !pendingDeploy.title || !pendingDeploy.project || !pendingDeploy.projectID || !pendingDeploy.apiUrl || !pendingDeploy.email || !pendingDeploy.apiKey
     })))
   }, /*#__PURE__*/_react["default"].createElement(_ui.Box, {
     padding: 4
