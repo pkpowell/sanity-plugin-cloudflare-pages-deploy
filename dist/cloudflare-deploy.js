@@ -92,42 +92,11 @@ var CloudflareDeploy = function CloudflareDeploy() {
 
   var onSubmit = /*#__PURE__*/function () {
     var _ref = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee() {
-      var accountId;
       return _regenerator["default"].wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
               setIsSubmitting(true);
-              accountId = pendingDeploy.projectID; // first fetch Cloudflare account id to the according email and api key
-              // try {
-              //   const fetchAccountId = await axios.get(
-              //     `${pendingDeploy.apiUrl}/client/v4/accounts?page=1&per_page=1&direction=desc`,
-              //     {
-              //       headers: {
-              //         'X-Auth-Email': pendingDeploy.email,
-              //         'X-Auth-Key': pendingDeploy.apiKey,
-              //         'Content-Type': 'application/json',
-              //       },
-              //     }
-              //   )
-              //   if (!fetchAccountId?.data?.success) {
-              //     throw new Error('Can not fetch Cloudflare account id')
-              //   }
-              //   accountId = pendingDeploy.projectID
-              //   // accountId = fetchAccountId.data.result[0].id
-              // } catch (error) {
-              //   console.error(error)
-              //   setIsSubmitting(false)
-              //   toast.push({
-              //     status: 'error',
-              //     title: 'Cloudflare API Error',
-              //     closable: true,
-              //     description:
-              //       'Error accessing Cloudflare API or fetching Cloudflare account id',
-              //   })
-              //   return
-              // }
-
               client.create({
                 // Explicitly define an _id inside the cloudflare-deploy path to make sure it's not publicly accessible
                 // This will protect users' tokens & project info. Read more: https://www.sanity.io/docs/ids
@@ -135,9 +104,8 @@ var CloudflareDeploy = function CloudflareDeploy() {
                 _type: WEBHOOK_TYPE,
                 name: pendingDeploy.title,
                 cloudflareApiEndpointUrl: "".concat(pendingDeploy.apiUrl, "/client/v4/accounts/").concat(accountId, "/pages/projects/").concat(pendingDeploy.project, "/deployments"),
-                cloudflareAccountId: accountId,
+                cloudflareAccountId: pendingDeploy.accountID,
                 cloudflareProject: pendingDeploy.project,
-                cloudflareProjectID: pendingDeploy.projectID,
                 cloudflareEmail: pendingDeploy.email,
                 cloudflareApiKey: pendingDeploy.apiKey
               }).then(function () {
@@ -151,7 +119,7 @@ var CloudflareDeploy = function CloudflareDeploy() {
                 setpendingDeploy(initialDeploy); // Reset the pending webhook state
               });
 
-            case 3:
+            case 2:
             case "end":
               return _context.stop();
           }
@@ -247,7 +215,6 @@ var CloudflareDeploy = function CloudflareDeploy() {
       cloudflareApiEndpointUrl: deploy.cloudflareApiEndpointUrl,
       cloudflareAccountId: deploy.cloudflareAccountId,
       cloudflareProject: deploy.cloudflareProject,
-      cloudflareProjectID: deploy.cloudflareProjectID,
       cloudflareEmail: deploy.cloudflareEmail,
       cloudflareAPIKey: deploy.cloudflareApiKey
     });
@@ -329,22 +296,6 @@ var CloudflareDeploy = function CloudflareDeploy() {
       });
     }
   })), /*#__PURE__*/_react["default"].createElement(_default2["default"], {
-    label: "Project ID",
-    description: "The Project ID"
-  }, /*#__PURE__*/_react["default"].createElement(_ui.TextInput, {
-    type: "text",
-    value: pendingDeploy.projectID,
-    onChange: function onChange(e) {
-      e.persist();
-      setpendingDeploy(function (prevState) {
-        var _e$target3;
-
-        return _objectSpread(_objectSpread({}, prevState), {
-          projectID: e === null || e === void 0 ? void 0 : (_e$target3 = e.target) === null || _e$target3 === void 0 ? void 0 : _e$target3.value
-        });
-      });
-    }
-  })), /*#__PURE__*/_react["default"].createElement(_default2["default"], {
     label: "Cloudflare API Endpoint URL",
     description: "The url without trailing slashes like 'https://myproxyurl.com'"
   }, /*#__PURE__*/_react["default"].createElement(_ui.TextInput, {
@@ -353,10 +304,10 @@ var CloudflareDeploy = function CloudflareDeploy() {
     onChange: function onChange(e) {
       e.persist();
       setpendingDeploy(function (prevState) {
-        var _e$target4;
+        var _e$target3;
 
         return _objectSpread(_objectSpread({}, prevState), {
-          apiUrl: e === null || e === void 0 ? void 0 : (_e$target4 = e.target) === null || _e$target4 === void 0 ? void 0 : _e$target4.value
+          apiUrl: e === null || e === void 0 ? void 0 : (_e$target3 = e.target) === null || _e$target3 === void 0 ? void 0 : _e$target3.value
         });
       });
     }
@@ -369,10 +320,26 @@ var CloudflareDeploy = function CloudflareDeploy() {
     onChange: function onChange(e) {
       e.persist();
       setpendingDeploy(function (prevState) {
+        var _e$target4;
+
+        return _objectSpread(_objectSpread({}, prevState), {
+          email: e === null || e === void 0 ? void 0 : (_e$target4 = e.target) === null || _e$target4 === void 0 ? void 0 : _e$target4.value
+        });
+      });
+    }
+  })), /*#__PURE__*/_react["default"].createElement(_default2["default"], {
+    label: "Account ID",
+    description: "Account ID accociated with Cloudflare Email"
+  }, /*#__PURE__*/_react["default"].createElement(_ui.TextInput, {
+    type: "text",
+    value: pendingDeploy.accountID,
+    onChange: function onChange(e) {
+      e.persist();
+      setpendingDeploy(function (prevState) {
         var _e$target5;
 
         return _objectSpread(_objectSpread({}, prevState), {
-          email: e === null || e === void 0 ? void 0 : (_e$target5 = e.target) === null || _e$target5 === void 0 ? void 0 : _e$target5.value
+          accountID: e === null || e === void 0 ? void 0 : (_e$target5 = e.target) === null || _e$target5 === void 0 ? void 0 : _e$target5.value
         });
       });
     }

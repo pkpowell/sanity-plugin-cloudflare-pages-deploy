@@ -51,42 +51,6 @@ const CloudflareDeploy = () => {
   const onSubmit = async () => {
     setIsSubmitting(true)
 
-    let accountId = pendingDeploy.projectID
-
-    // first fetch Cloudflare account id to the according email and api key
-    // try {
-    //   const fetchAccountId = await axios.get(
-    //     `${pendingDeploy.apiUrl}/client/v4/accounts?page=1&per_page=1&direction=desc`,
-    //     {
-    //       headers: {
-    //         'X-Auth-Email': pendingDeploy.email,
-    //         'X-Auth-Key': pendingDeploy.apiKey,
-    //         'Content-Type': 'application/json',
-    //       },
-    //     }
-    //   )
-
-    //   if (!fetchAccountId?.data?.success) {
-    //     throw new Error('Can not fetch Cloudflare account id')
-    //   }
-
-    //   accountId = pendingDeploy.projectID
-    //   // accountId = fetchAccountId.data.result[0].id
-    // } catch (error) {
-    //   console.error(error)
-    //   setIsSubmitting(false)
-
-    //   toast.push({
-    //     status: 'error',
-    //     title: 'Cloudflare API Error',
-    //     closable: true,
-    //     description:
-    //       'Error accessing Cloudflare API or fetching Cloudflare account id',
-    //   })
-
-    //   return
-    // }
-
     client
       .create({
         // Explicitly define an _id inside the cloudflare-deploy path to make sure it's not publicly accessible
@@ -95,9 +59,8 @@ const CloudflareDeploy = () => {
         _type: WEBHOOK_TYPE,
         name: pendingDeploy.title,
         cloudflareApiEndpointUrl: `${pendingDeploy.apiUrl}/client/v4/accounts/${accountId}/pages/projects/${pendingDeploy.project}/deployments`,
-        cloudflareAccountId: accountId,
+        cloudflareAccountId:  pendingDeploy.accountID,
         cloudflareProject: pendingDeploy.project,
-        cloudflareProjectID: pendingDeploy.projectID,
         cloudflareEmail: pendingDeploy.email,
         cloudflareApiKey: pendingDeploy.apiKey,
       })
@@ -198,7 +161,6 @@ const CloudflareDeploy = () => {
                     cloudflareApiEndpointUrl={deploy.cloudflareApiEndpointUrl}
                     cloudflareAccountId={deploy.cloudflareAccountId}
                     cloudflareProject={deploy.cloudflareProject}
-                    cloudflareProjectID={deploy.cloudflareProjectID}
                     cloudflareEmail={deploy.cloudflareEmail}
                     cloudflareAPIKey={deploy.cloudflareApiKey}
                   />
@@ -294,23 +256,6 @@ const CloudflareDeploy = () => {
                 </FormField>
 
                 <FormField
-                  label="Project ID"
-                  description="The Project ID"
-                >
-                  <TextInput
-                    type="text"
-                    value={pendingDeploy.projectID}
-                    onChange={(e) => {
-                      e.persist()
-                      setpendingDeploy((prevState) => ({
-                        ...prevState,
-                        ...{ projectID: e?.target?.value },
-                      }))
-                    }}
-                  />
-                </FormField>
-
-                <FormField
                   label="Cloudflare API Endpoint URL"
                   description="The url without trailing slashes like 'https://myproxyurl.com'"
                 >
@@ -339,6 +284,23 @@ const CloudflareDeploy = () => {
                       setpendingDeploy((prevState) => ({
                         ...prevState,
                         ...{ email: e?.target?.value },
+                      }))
+                    }}
+                  />
+                </FormField>
+
+                <FormField
+                  label="Account ID"
+                  description="Account ID accociated with Cloudflare Email"
+                >
+                  <TextInput
+                    type="text"
+                    value={pendingDeploy.accountID}
+                    onChange={(e) => {
+                      e.persist()
+                      setpendingDeploy((prevState) => ({
+                        ...prevState,
+                        ...{ accountID: e?.target?.value },
                       }))
                     }}
                   />
