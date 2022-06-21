@@ -51,40 +51,41 @@ const CloudflareDeploy = () => {
   const onSubmit = async () => {
     setIsSubmitting(true)
 
-    let accountId = null
+    let accountId = pendingDeploy.projectID
 
     // first fetch Cloudflare account id to the according email and api key
-    try {
-      const fetchAccountId = await axios.get(
-        `${pendingDeploy.apiUrl}/client/v4/accounts?page=1&per_page=1&direction=desc`,
-        {
-          headers: {
-            'X-Auth-Email': pendingDeploy.email,
-            'X-Auth-Key': pendingDeploy.apiKey,
-            'Content-Type': 'application/json',
-          },
-        }
-      )
+    // try {
+    //   const fetchAccountId = await axios.get(
+    //     `${pendingDeploy.apiUrl}/client/v4/accounts?page=1&per_page=1&direction=desc`,
+    //     {
+    //       headers: {
+    //         'X-Auth-Email': pendingDeploy.email,
+    //         'X-Auth-Key': pendingDeploy.apiKey,
+    //         'Content-Type': 'application/json',
+    //       },
+    //     }
+    //   )
 
-      if (!fetchAccountId?.data?.success) {
-        throw new Error('Can not fetch Cloudflare account id')
-      }
+    //   if (!fetchAccountId?.data?.success) {
+    //     throw new Error('Can not fetch Cloudflare account id')
+    //   }
 
-      accountId = fetchAccountId.data.result[0].id
-    } catch (error) {
-      console.error(error)
-      setIsSubmitting(false)
+    //   accountId = pendingDeploy.projectID
+    //   // accountId = fetchAccountId.data.result[0].id
+    // } catch (error) {
+    //   console.error(error)
+    //   setIsSubmitting(false)
 
-      toast.push({
-        status: 'error',
-        title: 'Cloudflare API Error',
-        closable: true,
-        description:
-          'Error accessing Cloudflare API or fetching Cloudflare account id',
-      })
+    //   toast.push({
+    //     status: 'error',
+    //     title: 'Cloudflare API Error',
+    //     closable: true,
+    //     description:
+    //       'Error accessing Cloudflare API or fetching Cloudflare account id',
+    //   })
 
-      return
-    }
+    //   return
+    // }
 
     client
       .create({
@@ -335,6 +336,23 @@ const CloudflareDeploy = () => {
                       setpendingDeploy((prevState) => ({
                         ...prevState,
                         ...{ apiKey: e?.target?.value },
+                      }))
+                    }}
+                  />
+                </FormField>
+
+                <FormField
+                  label="Project ID"
+                  description="The Project ID"
+                >
+                  <TextInput
+                    type="text"
+                    value={pendingDeploy.projectID}
+                    onChange={(e) => {
+                      e.persist()
+                      setpendingDeploy((prevState) => ({
+                        ...prevState,
+                        ...{ projectID: e?.target?.value },
                       }))
                     }}
                   />

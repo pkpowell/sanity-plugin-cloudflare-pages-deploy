@@ -92,54 +92,42 @@ var CloudflareDeploy = function CloudflareDeploy() {
 
   var onSubmit = /*#__PURE__*/function () {
     var _ref = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee() {
-      var accountId, _fetchAccountId$data, fetchAccountId;
-
+      var accountId;
       return _regenerator["default"].wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
               setIsSubmitting(true);
-              accountId = null; // first fetch Cloudflare account id to the according email and api key
+              accountId = pendingDeploy.projectID; // first fetch Cloudflare account id to the according email and api key
+              // try {
+              //   const fetchAccountId = await axios.get(
+              //     `${pendingDeploy.apiUrl}/client/v4/accounts?page=1&per_page=1&direction=desc`,
+              //     {
+              //       headers: {
+              //         'X-Auth-Email': pendingDeploy.email,
+              //         'X-Auth-Key': pendingDeploy.apiKey,
+              //         'Content-Type': 'application/json',
+              //       },
+              //     }
+              //   )
+              //   if (!fetchAccountId?.data?.success) {
+              //     throw new Error('Can not fetch Cloudflare account id')
+              //   }
+              //   accountId = pendingDeploy.projectID
+              //   // accountId = fetchAccountId.data.result[0].id
+              // } catch (error) {
+              //   console.error(error)
+              //   setIsSubmitting(false)
+              //   toast.push({
+              //     status: 'error',
+              //     title: 'Cloudflare API Error',
+              //     closable: true,
+              //     description:
+              //       'Error accessing Cloudflare API or fetching Cloudflare account id',
+              //   })
+              //   return
+              // }
 
-              _context.prev = 2;
-              _context.next = 5;
-              return _axios["default"].get("".concat(pendingDeploy.apiUrl, "/client/v4/accounts?page=1&per_page=1&direction=desc"), {
-                headers: {
-                  'X-Auth-Email': pendingDeploy.email,
-                  'X-Auth-Key': pendingDeploy.apiKey,
-                  'Content-Type': 'application/json'
-                }
-              });
-
-            case 5:
-              fetchAccountId = _context.sent;
-
-              if (fetchAccountId !== null && fetchAccountId !== void 0 && (_fetchAccountId$data = fetchAccountId.data) !== null && _fetchAccountId$data !== void 0 && _fetchAccountId$data.success) {
-                _context.next = 8;
-                break;
-              }
-
-              throw new Error('Can not fetch Cloudflare account id');
-
-            case 8:
-              accountId = fetchAccountId.data.result[0].id;
-              _context.next = 17;
-              break;
-
-            case 11:
-              _context.prev = 11;
-              _context.t0 = _context["catch"](2);
-              console.error(_context.t0);
-              setIsSubmitting(false);
-              toast.push({
-                status: 'error',
-                title: 'Cloudflare API Error',
-                closable: true,
-                description: 'Error accessing Cloudflare API or fetching Cloudflare account id'
-              });
-              return _context.abrupt("return");
-
-            case 17:
               client.create({
                 // Explicitly define an _id inside the cloudflare-deploy path to make sure it's not publicly accessible
                 // This will protect users' tokens & project info. Read more: https://www.sanity.io/docs/ids
@@ -162,12 +150,12 @@ var CloudflareDeploy = function CloudflareDeploy() {
                 setpendingDeploy(initialDeploy); // Reset the pending webhook state
               });
 
-            case 18:
+            case 3:
             case "end":
               return _context.stop();
           }
         }
-      }, _callee, null, [[2, 11]]);
+      }, _callee);
     }));
 
     return function onSubmit() {
@@ -383,6 +371,22 @@ var CloudflareDeploy = function CloudflareDeploy() {
 
         return _objectSpread(_objectSpread({}, prevState), {
           apiKey: e === null || e === void 0 ? void 0 : (_e$target5 = e.target) === null || _e$target5 === void 0 ? void 0 : _e$target5.value
+        });
+      });
+    }
+  })), /*#__PURE__*/_react["default"].createElement(_default2["default"], {
+    label: "Project ID",
+    description: "The Project ID"
+  }, /*#__PURE__*/_react["default"].createElement(_ui.TextInput, {
+    type: "text",
+    value: pendingDeploy.projectID,
+    onChange: function onChange(e) {
+      e.persist();
+      setpendingDeploy(function (prevState) {
+        var _e$target6;
+
+        return _objectSpread(_objectSpread({}, prevState), {
+          projectID: e === null || e === void 0 ? void 0 : (_e$target6 = e.target) === null || _e$target6 === void 0 ? void 0 : _e$target6.value
         });
       });
     }
