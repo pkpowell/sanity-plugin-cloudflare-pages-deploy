@@ -97,6 +97,7 @@ const CloudflareDeploy = () => {
         cloudflareApiEndpointUrl: `${pendingDeploy.apiUrl}/client/v4/accounts/${accountId}/pages/projects/${pendingDeploy.project}/deployments`,
         cloudflareAccountId: accountId,
         cloudflareProject: pendingDeploy.project,
+        cloudflareProjectID: pendingDeploy.projectID,
         cloudflareEmail: pendingDeploy.email,
         cloudflareApiKey: pendingDeploy.apiKey,
       })
@@ -197,6 +198,7 @@ const CloudflareDeploy = () => {
                     cloudflareApiEndpointUrl={deploy.cloudflareApiEndpointUrl}
                     cloudflareAccountId={deploy.cloudflareAccountId}
                     cloudflareProject={deploy.cloudflareProject}
+                    cloudflareProjectID={deploy.cloudflareProjectID}
                     cloudflareEmail={deploy.cloudflareEmail}
                     cloudflareAPIKey={deploy.cloudflareApiKey}
                   />
@@ -245,6 +247,7 @@ const CloudflareDeploy = () => {
                       isSubmitting ||
                       !pendingDeploy.title ||
                       !pendingDeploy.project ||
+                      !pendingDeploy.projectID ||
                       !pendingDeploy.apiUrl ||
                       !pendingDeploy.email ||
                       !pendingDeploy.apiKey
