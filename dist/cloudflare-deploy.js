@@ -327,6 +327,22 @@ var CloudflareDeploy = function CloudflareDeploy() {
       });
     }
   })), /*#__PURE__*/_react["default"].createElement(_default2["default"], {
+    label: "Project ID",
+    description: "The Project ID"
+  }, /*#__PURE__*/_react["default"].createElement(_ui.TextInput, {
+    type: "text",
+    value: pendingDeploy.projectID,
+    onChange: function onChange(e) {
+      e.persist();
+      setpendingDeploy(function (prevState) {
+        var _e$target3;
+
+        return _objectSpread(_objectSpread({}, prevState), {
+          projectID: e === null || e === void 0 ? void 0 : (_e$target3 = e.target) === null || _e$target3 === void 0 ? void 0 : _e$target3.value
+        });
+      });
+    }
+  })), /*#__PURE__*/_react["default"].createElement(_default2["default"], {
     label: "Cloudflare API Endpoint URL",
     description: "The url without trailing slashes like 'https://myproxyurl.com'"
   }, /*#__PURE__*/_react["default"].createElement(_ui.TextInput, {
@@ -335,10 +351,10 @@ var CloudflareDeploy = function CloudflareDeploy() {
     onChange: function onChange(e) {
       e.persist();
       setpendingDeploy(function (prevState) {
-        var _e$target3;
+        var _e$target4;
 
         return _objectSpread(_objectSpread({}, prevState), {
-          apiUrl: e === null || e === void 0 ? void 0 : (_e$target3 = e.target) === null || _e$target3 === void 0 ? void 0 : _e$target3.value
+          apiUrl: e === null || e === void 0 ? void 0 : (_e$target4 = e.target) === null || _e$target4 === void 0 ? void 0 : _e$target4.value
         });
       });
     }
@@ -351,10 +367,10 @@ var CloudflareDeploy = function CloudflareDeploy() {
     onChange: function onChange(e) {
       e.persist();
       setpendingDeploy(function (prevState) {
-        var _e$target4;
+        var _e$target5;
 
         return _objectSpread(_objectSpread({}, prevState), {
-          email: e === null || e === void 0 ? void 0 : (_e$target4 = e.target) === null || _e$target4 === void 0 ? void 0 : _e$target4.value
+          email: e === null || e === void 0 ? void 0 : (_e$target5 = e.target) === null || _e$target5 === void 0 ? void 0 : _e$target5.value
         });
       });
     }
@@ -367,26 +383,10 @@ var CloudflareDeploy = function CloudflareDeploy() {
     onChange: function onChange(e) {
       e.persist();
       setpendingDeploy(function (prevState) {
-        var _e$target5;
-
-        return _objectSpread(_objectSpread({}, prevState), {
-          apiKey: e === null || e === void 0 ? void 0 : (_e$target5 = e.target) === null || _e$target5 === void 0 ? void 0 : _e$target5.value
-        });
-      });
-    }
-  })), /*#__PURE__*/_react["default"].createElement(_default2["default"], {
-    label: "Project ID",
-    description: "The Project ID"
-  }, /*#__PURE__*/_react["default"].createElement(_ui.TextInput, {
-    type: "text",
-    value: pendingDeploy.projectID,
-    onChange: function onChange(e) {
-      e.persist();
-      setpendingDeploy(function (prevState) {
         var _e$target6;
 
         return _objectSpread(_objectSpread({}, prevState), {
-          projectID: e === null || e === void 0 ? void 0 : (_e$target6 = e.target) === null || _e$target6 === void 0 ? void 0 : _e$target6.value
+          apiKey: e === null || e === void 0 ? void 0 : (_e$target6 = e.target) === null || _e$target6 === void 0 ? void 0 : _e$target6.value
         });
       });
     }

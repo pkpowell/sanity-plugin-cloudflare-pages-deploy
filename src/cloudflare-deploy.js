@@ -291,6 +291,23 @@ const CloudflareDeploy = () => {
                 </FormField>
 
                 <FormField
+                  label="Project ID"
+                  description="The Project ID"
+                >
+                  <TextInput
+                    type="text"
+                    value={pendingDeploy.projectID}
+                    onChange={(e) => {
+                      e.persist()
+                      setpendingDeploy((prevState) => ({
+                        ...prevState,
+                        ...{ projectID: e?.target?.value },
+                      }))
+                    }}
+                  />
+                </FormField>
+
+                <FormField
                   label="Cloudflare API Endpoint URL"
                   description="The url without trailing slashes like 'https://myproxyurl.com'"
                 >
@@ -336,23 +353,6 @@ const CloudflareDeploy = () => {
                       setpendingDeploy((prevState) => ({
                         ...prevState,
                         ...{ apiKey: e?.target?.value },
-                      }))
-                    }}
-                  />
-                </FormField>
-
-                <FormField
-                  label="Project ID"
-                  description="The Project ID"
-                >
-                  <TextInput
-                    type="text"
-                    value={pendingDeploy.projectID}
-                    onChange={(e) => {
-                      e.persist()
-                      setpendingDeploy((prevState) => ({
-                        ...prevState,
-                        ...{ projectID: e?.target?.value },
                       }))
                     }}
                   />
