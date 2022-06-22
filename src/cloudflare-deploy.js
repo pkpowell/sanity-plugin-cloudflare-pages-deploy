@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
+// import axios from 'axios'
 import { nanoid } from 'nanoid'
 
 import sanityClient from 'part:@sanity/base/client'
 import AnchorButton from 'part:@sanity/components/buttons/anchor'
 import FormField from 'part:@sanity/components/formfields/default'
-import WarningIcon from 'part:@sanity/base/warning-icon'
+// import WarningIcon from 'part:@sanity/base/warning-icon'
 import {
   studioTheme,
   ThemeProvider,
@@ -15,13 +15,13 @@ import {
   Grid,
   Flex,
   Box,
-  Card,
+  // Card,
   Stack,
   Spinner,
   Button,
   Text,
-  Inline,
-  Heading,
+  // Inline,
+  // Heading,
   TextInput,
 } from '@sanity/ui'
 
@@ -257,7 +257,7 @@ const CloudflareDeploy = () => {
 
                 <FormField
                   label="Cloudflare API Endpoint URL"
-                  description="The url without trailing slashes like 'https://myproxyurl.com'"
+                  description="The Cloudflare Workers url without trailing slashes e.g. 'https://worker.cf.com'"
                 >
                   <TextInput
                     type="url"
@@ -290,8 +290,8 @@ const CloudflareDeploy = () => {
                 </FormField>
 
                 <FormField
-                  label="Account ID"
-                  description="Account ID accociated with Cloudflare Email"
+                  label="Cloudflare Account ID"
+                  description="Account ID accociated with Project"
                 >
                   <TextInput
                     type="text"
@@ -307,8 +307,8 @@ const CloudflareDeploy = () => {
                 </FormField>
 
                 <FormField
-                  label="Cloudflare API key"
-                  description="The Cloudflare API key from your account settings"
+                  label="Cloudflare API Key"
+                  description="Cloudflare Global API Key"
                 >
                   <TextInput
                     type="text"
@@ -323,7 +323,7 @@ const CloudflareDeploy = () => {
                   />
                 </FormField>
 
-                <Card padding={[3, 3, 4]} radius={3} shadow={1} tone="caution">
+                {/* <Card padding={[3, 3, 4]} radius={3} shadow={1} tone="caution">
                   <Box marginBottom={3}>
                     <Inline space={[1]}>
                       <WarningIcon style={{ fontSize: 24 }} />
@@ -334,7 +334,7 @@ const CloudflareDeploy = () => {
                     Once you create this deployment you will not be able to edit
                     it.
                   </Text>
-                </Card>
+                </Card> */}
               </Stack>
             </Box>
           </Dialog>

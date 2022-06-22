@@ -21,8 +21,6 @@ var _slicedToArray2 = _interopRequireDefault(require("@babel/runtime/helpers/sli
 
 var _react = _interopRequireWildcard(require("react"));
 
-var _axios = _interopRequireDefault(require("axios"));
-
 var _nanoid = require("nanoid");
 
 var _client = _interopRequireDefault(require("part:@sanity/base/client"));
@@ -30,8 +28,6 @@ var _client = _interopRequireDefault(require("part:@sanity/base/client"));
 var _anchor = _interopRequireDefault(require("part:@sanity/components/buttons/anchor"));
 
 var _default2 = _interopRequireDefault(require("part:@sanity/components/formfields/default"));
-
-var _warningIcon = _interopRequireDefault(require("part:@sanity/base/warning-icon"));
 
 var _ui = require("@sanity/ui");
 
@@ -297,7 +293,7 @@ var CloudflareDeploy = function CloudflareDeploy() {
     }
   })), /*#__PURE__*/_react["default"].createElement(_default2["default"], {
     label: "Cloudflare API Endpoint URL",
-    description: "The url without trailing slashes like 'https://myproxyurl.com'"
+    description: "The Cloudflare Workers url without trailing slashes e.g. 'https://worker.cf.com'"
   }, /*#__PURE__*/_react["default"].createElement(_ui.TextInput, {
     type: "url",
     value: pendingDeploy.apiUrl,
@@ -328,8 +324,8 @@ var CloudflareDeploy = function CloudflareDeploy() {
       });
     }
   })), /*#__PURE__*/_react["default"].createElement(_default2["default"], {
-    label: "Account ID",
-    description: "Account ID accociated with Cloudflare Email"
+    label: "Cloudflare Account ID",
+    description: "Account ID accociated with Project"
   }, /*#__PURE__*/_react["default"].createElement(_ui.TextInput, {
     type: "text",
     value: pendingDeploy.accountID,
@@ -344,8 +340,8 @@ var CloudflareDeploy = function CloudflareDeploy() {
       });
     }
   })), /*#__PURE__*/_react["default"].createElement(_default2["default"], {
-    label: "Cloudflare API key",
-    description: "The Cloudflare API key from your account settings"
+    label: "Cloudflare API Key",
+    description: "Cloudflare Global API Key"
   }, /*#__PURE__*/_react["default"].createElement(_ui.TextInput, {
     type: "text",
     value: pendingDeploy.apiKey,
@@ -359,24 +355,7 @@ var CloudflareDeploy = function CloudflareDeploy() {
         });
       });
     }
-  })), /*#__PURE__*/_react["default"].createElement(_ui.Card, {
-    padding: [3, 3, 4],
-    radius: 3,
-    shadow: 1,
-    tone: "caution"
-  }, /*#__PURE__*/_react["default"].createElement(_ui.Box, {
-    marginBottom: 3
-  }, /*#__PURE__*/_react["default"].createElement(_ui.Inline, {
-    space: [1]
-  }, /*#__PURE__*/_react["default"].createElement(_warningIcon["default"], {
-    style: {
-      fontSize: 24
-    }
-  }), /*#__PURE__*/_react["default"].createElement(_ui.Heading, {
-    size: 1
-  }, "Careful!"))), /*#__PURE__*/_react["default"].createElement(_ui.Text, {
-    size: [1, 1, 1]
-  }, "Once you create this deployment you will not be able to edit it.")))))));
+  })))))));
 };
 
 var EmptyState = function EmptyState() {

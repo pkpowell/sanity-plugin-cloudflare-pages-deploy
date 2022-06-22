@@ -1,6 +1,6 @@
 {
   "name": "sanity-plugin-cloudflare-pages-deploy",
-  "version": "1.0.7",
+  "version": "1.0.9",
   "description": "Trigger Cloudflare Pages Deploys from your Sanity Studio.",
   "keywords": [
     "sanity",
@@ -43,8 +43,8 @@
     "@sanity/dashboard": "^2.1.0",
     "@sanity/icons": "^1.0.0",
     "@sanity/ui": "^0.33.0",
-    "react": "^16.14.0",
-    "react-dom": "^16.14.0"
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
   },
   "sanityTemplate": {
     "suggestedName": "cloudflare-pages-deploy",
