@@ -253,7 +253,7 @@ var CloudflareDeploy = function CloudflareDeploy() {
       onClick: function onClick() {
         return onSubmit();
       },
-      disabled: isSubmitting || !pendingDeploy.title || !pendingDeploy.project || !pendingDeploy.projectID || !pendingDeploy.apiUrl || !pendingDeploy.email || !pendingDeploy.apiKey
+      disabled: !pendingDeploy.title || !pendingDeploy.projectID || !pendingDeploy.apiUrl || !pendingDeploy.email || !pendingDeploy.apiKey
     })))
   }, /*#__PURE__*/_react["default"].createElement(_ui.Box, {
     padding: 4

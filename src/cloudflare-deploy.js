@@ -206,9 +206,7 @@ const CloudflareDeploy = () => {
                     loading={isSubmitting}
                     onClick={() => onSubmit()}
                     disabled={
-                      isSubmitting ||
                       !pendingDeploy.title ||
-                      !pendingDeploy.project ||
                       !pendingDeploy.projectID ||
                       !pendingDeploy.apiUrl ||
                       !pendingDeploy.email ||
